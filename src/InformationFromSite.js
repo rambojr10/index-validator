@@ -3,18 +3,25 @@ import cherio from "cherio"
 
 const URLS = {
     loginPage: (scanid) => `https://www.talent.com/private/tools/content/scraper/spiderCodeTool.php?scanid=${scanid}`,
-    spiderCode: (scanid) => `https://www.talent.com/private/tools/content/scraper/services/loadSpiderCode.php?scanid=${scanid}&step=static-mapjobs`,
+    crawlGroup: (scanid) => `https://www.talent.com/private/tools/content/scraper/ajax/viewScanidInfo.php?scanid=${scanid}&type=info`,
+    spiderCode: (scanid, crawlGroup) => `https://www.talent.com/private/tools/content/scraper/services/loadSpiderCode.php?scanid=${scanid}&step=${crawlGroup}`,
     sourceDataTree: `https://talent.com/private/tools/content/sourceDataTree/index.php`,
-    lastCrawlId: (scanid) => `https://talent.com/private/tools/content/sourceDataTree/ajax/drawTreeEntriesTable.php?scanid=${scanid}&length=25&page=1`,
+    lastCrawlId: (scanid) => `https://talent.com/private/tools/content/sourceDataTree/ajax/drawTreeEntriesTable.php?scanid=${scanid}&length=25&page=1&lastEntry=1`,
     htmlWithTags: (scanid, lastCrawlId) => `https://talent.com/private/tools/content/sourceDataTree/ajax/drawJsonTree.php?viewMode=json&scanid=${scanid}&${lastCrawlId}`,
 }
+const CRAWL_GROUP_LIST = {
+    32: "static-mapjobs",
+    41: "api-mapjobs",
+}
+
 async function login({ email, password, scanid }) {
 
     // Launch
     const browser = await chromium.launch({
         headless: true
     })
-    const page = await browser.newPage()
+    const context = await browser.newContext()
+    const page = await context.newPage()
     await page.goto(URLS.loginPage(scanid))
 
     // Type data and sign in 
@@ -26,8 +33,8 @@ async function login({ email, password, scanid }) {
 
     await page.locator('[value="Login"]').click()
 
-    // Get spider code
-    const code = await page.evaluate(async (url) => {
+    // Get html with crawl gruop of scanid
+    const htmlCrawlGroup = await page.evaluate(async (url) => {
 
         async function makeRequest({ url, method }) {
             return fetch(url, {
@@ -41,10 +48,39 @@ async function login({ email, password, scanid }) {
         }
 
         const requestCode = await makeRequest({ url, method: 'GET' })
-        const { code } = await requestCode.json()
-        return code
+        return requestCode.text()
 
-    }, URLS.spiderCode(scanid))
+    }, URLS.crawlGroup(scanid))
+
+    // Get the number of crawl group of scanid
+    const $htmlCrawlGroup = cherio.load(htmlCrawlGroup)
+    const crawlGroup = CRAWL_GROUP_LIST[$htmlCrawlGroup('select[name="crawlGroup"] > option[selected]').val()]
+
+    // If the spider is not Static or API we leave
+    if (!crawlGroup) {
+        await browser.close()
+        const message = "The spider is not STATIC or API"
+        console.log(message)
+        return message
+    }
+
+    // Get spider code
+    const { code } = await page.evaluate(async (url) => {
+
+        async function makeRequest({ url, method }) {
+            return fetch(url, {
+                "headers": {
+                    "accept": "*/*",
+                    "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                },
+                "body": null,
+                "method": method,
+            })
+        }
+
+        const requestCode = await makeRequest({ url, method: 'GET' })
+        return requestCode.json()
+    }, URLS.spiderCode(scanid, crawlGroup))
 
     // Go to searchDataTree page
     await page.goto(URLS.sourceDataTree)
@@ -72,9 +108,17 @@ async function login({ email, password, scanid }) {
     // Get the last crawl id
     const $htmlCrawlId = cherio.load(await htmlCrawlId)
     const lastCrawlId = $htmlCrawlId('table[class="hyperTable"] tbody tr:first-child > td:last-child > a')
-        .attr('onclick')
-        .split("&")
-        .find(e => e.includes("crawlId"))
+        ?.attr('onclick')
+        ?.split("&")
+        ?.find(e => e.includes("crawlId"))
+
+    // If there is no data_tree we leave
+    if (!lastCrawlId) {
+        await browser.close()
+        const message = "There is not data_tree"
+        console.log(message)
+        return message
+    }
 
     // Get the html with tags
     const htmlWithTags = await page.evaluate(async (urlToGetTags) => {
@@ -104,15 +148,18 @@ async function login({ email, password, scanid }) {
 
     // Structured data for the compare
     const structuredData = JSON.stringify({
-        code: await code.replace(/\r\n/g, "").trim(),
+        code: code.replace(/\r\n/g, "").trim(),
         tags: feedTags,
-    }, null, 2)
+    }, null, 0)
+
     console.log(structuredData)
     // return dataForIA
 }
 
 login({
-    email: "",
-    password: "",
-    scanid: ""
+    email: "andres.valencia@talent.com",
+    password: "Valencia10.",
+    scanid: "263384"
 })
+// scanid: "263384"
+// scanid: "263423"

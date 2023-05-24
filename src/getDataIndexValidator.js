@@ -14,11 +14,11 @@ const CRAWL_GROUP_LIST = {
     41: "api-mapjobs",
 }
 
-async function login({ email, password, scanid }) {
+async function getDataIndexValidator({ email, password, scanid }) {
 
     // Launch
     const browser = await chromium.launch({
-        headless: true
+        headless: false
     })
     const context = await browser.newContext()
     const page = await context.newPage()
@@ -152,14 +152,8 @@ async function login({ email, password, scanid }) {
         tags: feedTags,
     }, null, 0)
 
-    console.log(structuredData)
-    // return dataForIA
+    // console.log(structuredData)
+    return structuredData
 }
 
-login({
-    email: "andres.valencia@talent.com",
-    password: "Valencia10.",
-    scanid: "263384"
-})
-// scanid: "263384"
-// scanid: "263423"
+export default getDataIndexValidator

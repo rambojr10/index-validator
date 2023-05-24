@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 StepsToComplete.txt
+Prompts.txt
 
 # Editor directories and files
 .vscode/*

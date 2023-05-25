@@ -4,25 +4,38 @@ import { INDEX_VALIDATOR } from "./prompts.js"
 
 const { SYSTEM_MESSAGE, EXAMPLES_MESSAGES } = INDEX_VALIDATOR
 
-const dataIndexValidator = await getDataIndexValidator({
+const { code, tags } = await getDataIndexValidator({
     email: "andres.valencia@talent.com",
     password: "Valencia10.",
-    scanid: "261653"
+    scanid: "209762"
 })
-// scanid: "263384" static
-// scanid: "263423" api
 
+const response = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    temperature: 0.2,
+    messages: [
+        {
+            role: SYSTEM_MESSAGE.role,
+            content: SYSTEM_MESSAGE.content
+        }, 
+        ...EXAMPLES_MESSAGES,
+        {
+            role: 'user',
+            content: `[START] {"code":${code}, "tags":${tags}} [END]`,
+        }
+    ]
+})
+console.log(response.data.choices[0]?.message?.content)
+
+// const prompt = `${SYSTEM_MESSAGE.content} { code: ${code}, tags: ${tags} }`
 // const response = await openai.createCompletion({
-//     model: "gpt-3.5-turbo",
-//     messages: [
-//         {
-//             role,
-//             content: content(dataIndexValidator)
-//         }
+//     model: 'text-davinci-003',
+//     prompt: prompt,
+//     temperature: 0,
+//     max_tokens: 2000,
+//     examples: [
+//         [EXAMPLES_MESSAGES[0].content, EXAMPLES_MESSAGES[1].content],
+//         // ["input2", "output2"]
 //     ]
 // })
-const messages = {
-    role: SYSTEM_MESSAGE.role,
-    content: `${SYSTEM_MESSAGE.content} [[START]] ${dataIndexValidator} [[END]]}`,
-}
-console.log(messages)
+// console.log(response.data.choices[0]?.text)

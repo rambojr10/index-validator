@@ -13,6 +13,7 @@ dist-ssr
 *.local
 StepsToComplete.txt
 Prompts.txt
+src/Examples.js
 
 # Editor directories and files
 .vscode/*

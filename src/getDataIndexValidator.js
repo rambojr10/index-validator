@@ -18,7 +18,7 @@ async function getDataIndexValidator({ email, password, scanid }) {
 
     // Launch
     const browser = await chromium.launch({
-        headless: false
+        headless: true
     })
     const context = await browser.newContext()
     const page = await context.newPage()
@@ -142,17 +142,19 @@ async function getDataIndexValidator({ email, password, scanid }) {
     // Get the feed tags
     const $htmlWithTags = cherio.load(htmlWithTags)
     const feedTags = JSON.parse($htmlWithTags('textArea[name="jsonEditor"]').text().trim())
+    const tags = Object.values(feedTags)[0]
 
     // Close the browser
     await browser.close()
 
     // Structured data for the compare
-    const structuredData = JSON.stringify({
-        code: code.replace(/\r\n/g, "").trim(),
-        tags: feedTags,
-    }, null, 0)
+    const structuredData = JSON.parse(JSON.stringify({
+        "code": code.replace(/\r\n/g, '').trim(),
+        "tags": tags,
+    }, null, 0))
 
-    // console.log(structuredData)
+    console.log(`{"code": ${structuredData.code}, "tags": ${JSON.stringify(structuredData.tags)}}`)
+
     return structuredData
 }
 

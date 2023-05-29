@@ -1,9 +1,6 @@
-import { fileURLToPath } from 'url'
-import { dirname } from 'path'
-
 const defaultConfigs = {
-    __dirname: dirname(fileURLToPath(import.meta.url)),
-    PORT: 3000,
+    PORT: 5173,
+    API_KEY: '9b7ed72f2f0d86d0'
 }
 
 export default defaultConfigs

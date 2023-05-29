@@ -37,14 +37,14 @@ export const INDEX_VALIDATOR = {
             content: `{"AssignedTags":{"position":{"title":"$job['title']","location":{"name":"$job['source_city']","country":{"code":"$job['source_country']"}},"description":["$job['html']","$job['jobdesc']"]},"company":{"name":"$job['source_empname']"},"salary":"$job['source_salary']","how-to-apply":{"applicationurl":"$job['url']"},"partner-job-id":"$job['reqid']"},"UnassignedTags":{"position":{"job-functions":{"job-function":{"code":null}},"industries":{"industry":{"code":null}},"job-type":{"code":null},"experience-level":{"code":null}}}}`
         },
         // Scanid: 263423 / API
-        {
-            role: 'user',
-            content: `[START] {"code": $city = $j["address"]["city"];$state = $j["address"]["state"];$country = $j["address"]["countryCode"];$arrloc = array_filter([$city, $state, $country]);$loc = implode(", ", array_unique($arrloc));$job = [];$job['title'] = trim((String) $j["title"]);$job['location'] = $loc;$job['source_location'] = $loc;$job['source_city'] = $city;$job['source_state'] = $state;$job['source_country'] = $country;$job['source_empname'] = "LeaderStat";$job['reqid'] = trim((String) $j["id"]);$job['url'] = "https://www.leaderstat.com/search-jobs/";$job["apply_client_jobid"] = $j["id"];$job["apply_api_endpoint"] = "https://auth.bullhornstaffing.com/oauth/authorize";$job['source_jobtype'] = trim((String) $j["employmentType"]);$job['html'] = (String) $j["publicDescription"];$job['jobdesc'] = Tools::stripTags($job['html']);$job['temp'] = '22052023';$job['client_tag'] = (String) $j["customText16"];, "tags": [{"address":["address1","address2","city","countryCode","countryName","state","timezone","zip"]},"employmentType","title","publicDescription","status","customText1","customText2","customText3","customText16","customText17"]} [END]`
-        },
-        {
-            role: 'assistant',
-            content: `[START] {"AssignedTags":{"address":{"city":"$job['source_city']","state":"$job['source_state']","countryCode":"$job['source_country']"},"employmentType":"$job['source_jobtype']","title":"$job['title']","publicDescription":["$job['html']","$job['jobdesc']"],"customText16":"$job['client_tag']"},"UnassignedTags":{"address":{"address1":null,"address2":null,"countryName":null,"timezone":null,"zip":null},"status":null,"customText1":null,"customText2":null,"customText3":null,"customText17":null}} [END]`
-        },
+        // {
+        //     role: 'user',
+        //     content: `[START] {"code": $city = $j["address"]["city"];$state = $j["address"]["state"];$country = $j["address"]["countryCode"];$arrloc = array_filter([$city, $state, $country]);$loc = implode(", ", array_unique($arrloc));$job = [];$job['title'] = trim((String) $j["title"]);$job['location'] = $loc;$job['source_location'] = $loc;$job['source_city'] = $city;$job['source_state'] = $state;$job['source_country'] = $country;$job['source_empname'] = "LeaderStat";$job['reqid'] = trim((String) $j["id"]);$job['url'] = "https://www.leaderstat.com/search-jobs/";$job["apply_client_jobid"] = $j["id"];$job["apply_api_endpoint"] = "https://auth.bullhornstaffing.com/oauth/authorize";$job['source_jobtype'] = trim((String) $j["employmentType"]);$job['html'] = (String) $j["publicDescription"];$job['jobdesc'] = Tools::stripTags($job['html']);$job['temp'] = '22052023';$job['client_tag'] = (String) $j["customText16"];, "tags": [{"address":["address1","address2","city","countryCode","countryName","state","timezone","zip"]},"employmentType","title","publicDescription","status","customText1","customText2","customText3","customText16","customText17"]} [END]`
+        // },
+        // {
+        //     role: 'assistant',
+        //     content: `[START] {"AssignedTags":{"address":{"city":"$job['source_city']","state":"$job['source_state']","countryCode":"$job['source_country']"},"employmentType":"$job['source_jobtype']","title":"$job['title']","publicDescription":["$job['html']","$job['jobdesc']"],"customText16":"$job['client_tag']"},"UnassignedTags":{"address":{"address1":null,"address2":null,"countryName":null,"timezone":null,"zip":null},"status":null,"customText1":null,"customText2":null,"customText3":null,"customText17":null}} [END]`
+        // },
     ]
 }
 

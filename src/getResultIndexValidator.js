@@ -4,15 +4,17 @@ import { INDEX_VALIDATOR } from "./prompts.js"
 
 const { SYSTEM_MESSAGE, EXAMPLES_MESSAGES } = INDEX_VALIDATOR
 
+console.log('Generating...')
+
 const { code, tags } = await getDataIndexValidator({
     email: "andres.valencia@talent.com",
     password: "Valencia10.",
-    scanid: "209762"
+    scanid: "224170"
 })
 
 const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
-    temperature: 0.2,
+    temperature: 0.1,
     messages: [
         {
             role: SYSTEM_MESSAGE.role,
@@ -25,6 +27,7 @@ const response = await openai.createChatCompletion({
         }
     ]
 })
+console.log('Data generated.')
 console.log(response.data.choices[0]?.message?.content)
 
 // const prompt = `${SYSTEM_MESSAGE.content} { code: ${code}, tags: ${tags} }`
@@ -32,10 +35,6 @@ console.log(response.data.choices[0]?.message?.content)
 //     model: 'text-davinci-003',
 //     prompt: prompt,
 //     temperature: 0,
-//     max_tokens: 2000,
-//     examples: [
-//         [EXAMPLES_MESSAGES[0].content, EXAMPLES_MESSAGES[1].content],
-//         // ["input2", "output2"]
-//     ]
+//     max_tokens: 2500,
 // })
 // console.log(response.data.choices[0]?.text)

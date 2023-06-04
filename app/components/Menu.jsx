@@ -8,7 +8,10 @@ import { useNavigate } from 'react-router-dom'
 export function Menu() {
     const navigate = useNavigate()
 
-    const logOut = () => navigate('/login')
+    const logOut = () => {
+        localStorage.clear()
+        navigate('/login')
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>

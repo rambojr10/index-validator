@@ -2,11 +2,10 @@ import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Divider from '@mui/material/Divider'
 import { FactCheck, CodeOff, ErrorOutline, Key, LibraryBooks } from '@mui/icons-material'
-import { Menu } from './Menu'
-import { Item } from './Item'
-import '../styles/Dashboard.css'
+import { Menu } from '../components/Menu'
+import { Item } from '../components/Item'
 import { useState } from 'react'
-import { useNavigate, Routes, Route, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet } from 'react-router-dom'
 
 export function Dashboard() {
 

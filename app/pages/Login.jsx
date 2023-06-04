@@ -1,12 +1,16 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
+
 import '../styles/Login.css'
 
-export function Login() {
+export function Login({ onLoginSuccess }) {
 
+    const navigate = useNavigate()
     const [key, setKey] = useState('')
     const [error, setError] = useState(false)
 
@@ -28,8 +32,8 @@ export function Login() {
             const data = await response.json()
             if (response.ok) {
                 localStorage.setItem('key', data.key)
-                window.location.href = '/dashboard'
-                console.log(data)
+                navigate('/dashboard')
+                onLoginSuccess()
             } else {
                 console.log({
                     error: response.status,
@@ -38,7 +42,6 @@ export function Login() {
                 setError(true)
             }
         } catch (err) {
-            console.log(err)
             setError(true)
         }
     }

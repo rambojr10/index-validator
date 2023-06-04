@@ -4,31 +4,38 @@ import { INDEX_VALIDATOR } from "./prompts.js"
 
 const { SYSTEM_MESSAGE, EXAMPLES_MESSAGES } = INDEX_VALIDATOR
 
-console.log('Generating...')
+async function getResultIndexValidator(props) {
+    
+    console.log('Generating...')
 
-const { code, tags } = await getDataIndexValidator({
-    email: "andres.valencia@talent.com",
-    password: "Valencia10.",
-    scanid: "224170"
-})
+    const { code, tags, message } = await getDataIndexValidator(props)
 
-const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    temperature: 0.1,
-    messages: [
-        {
-            role: SYSTEM_MESSAGE.role,
-            content: SYSTEM_MESSAGE.content
-        }, 
-        ...EXAMPLES_MESSAGES,
-        {
-            role: 'user',
-            content: `[START] {"code":${code}, "tags":${tags}} [END]`,
-        }
-    ]
-})
-console.log('Data generated.')
-console.log(response.data.choices[0]?.message?.content)
+    const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        temperature: 0.1,
+        messages: [
+            {
+                role: SYSTEM_MESSAGE.role,
+                content: SYSTEM_MESSAGE.content
+            },
+            ...EXAMPLES_MESSAGES,
+            {
+                role: 'user',
+                content: `[START] {"code":${code}, "tags":${tags}} [END]`,
+            }
+        ]
+    })
+
+    console.log('Data generated.')
+    if (message) {
+        return message
+    }
+    return response.data.choices[0]?.message?.content
+}
+
+export default getResultIndexValidator
+
+// console.log(response.data.choices[0]?.message?.content)
 
 // const prompt = `${SYSTEM_MESSAGE.content} { code: ${code}, tags: ${tags} }`
 // const response = await openai.createCompletion({

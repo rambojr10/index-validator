@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './components/App.jsx'
-import './styles/index.css'
 import { CssBaseline } from '@mui/material'
 
 import '@fontsource/roboto/300.css'
@@ -25,7 +24,8 @@ const theme = createTheme({
         },
         special: {
             // main: '#e8591c',
-            main: '#e8373e'
+            // main: '#e8373e'
+            main: '#ff931c'
         }
     },
 })

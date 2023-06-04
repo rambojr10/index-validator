@@ -18,11 +18,11 @@ async function getDataIndexValidator({ email, password, scanid }) {
 
     // Launch
     const browser = await chromium.launch({
-        headless: true
+        headless: false,
     })
     const context = await browser.newContext()
     const page = await context.newPage()
-    await page.goto(URLS.loginPage(scanid))
+    await page.goto(URLS.loginPage(scanid), { timeout: 60000 })
 
     // Type data and sign in 
     const inputEmail = await page.locator('[name="email"]')
@@ -61,7 +61,7 @@ async function getDataIndexValidator({ email, password, scanid }) {
         await browser.close()
         const message = "The spider is not STATIC or API"
         console.log(message)
-        return message
+        return { message }
     }
 
     // Get spider code
@@ -117,7 +117,7 @@ async function getDataIndexValidator({ email, password, scanid }) {
         await browser.close()
         const message = "There is not data_tree"
         console.log(message)
-        return message
+        return { message }
     }
 
     // Get the html with tags
@@ -153,7 +153,7 @@ async function getDataIndexValidator({ email, password, scanid }) {
         "tags": tags,
     }, null, 0))
 
-    console.log(`{"code": ${structuredData.code}, "tags": ${JSON.stringify(structuredData.tags)}}`)
+    // console.log(`{"code": ${structuredData.code}, "tags": ${JSON.stringify(structuredData.tags)}}`)
 
     return structuredData
 }

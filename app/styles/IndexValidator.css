@@ -1,0 +1,8 @@
+@media (min-width: 768px) {
+    #container_editors_index_validator {
+        flex-direction: row;
+    }
+    #form_index_validator {
+        flex-direction: row;
+    }
+}

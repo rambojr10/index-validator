@@ -61,7 +61,7 @@ async function getDataIndexValidator({ email, password, scanid }) {
         await browser.close()
         const message = "The spider is not STATIC or API"
         console.log(message)
-        return { message }
+        return { type: 'error', message }
     }
 
     // Get spider code
@@ -117,7 +117,7 @@ async function getDataIndexValidator({ email, password, scanid }) {
         await browser.close()
         const message = "There is not data_tree"
         console.log(message)
-        return { message }
+        return { type: 'error', message }
     }
 
     // Get the html with tags

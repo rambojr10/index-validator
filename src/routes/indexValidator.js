@@ -25,31 +25,31 @@ indexRouter.get('/api/iv/:scanid', async (req, res) => {
         password,
         scanid
     }
-    const jsonData = {
-        "AssignedTags": {
-            "id": "$job['reqid']",
-            "title": "$job['title']",
-            "company": "$job['source_empname']",
-            "description": ["$job['html']", "$job['jobdesc']"],
-            "url": "$job['url']",
-            "location": "$job['source_city']",
-            "region": "$job['source_state']",
-            "Country": "$job['source_country']"
-        },
-        "UnassignedTags": {
-            "function": [null, null, null, null, null, null],
-            "parentLocationName": null,
-            "parentLocationId": null,
-            "GeoCoordinates": {
-                "latitude": null,
-                "longitude": null
-            },
-            "language": null
-        }
-    }
+    // const jsonData = {
+    //     "AssignedTags": {
+    //         "id": "$job['reqid']",
+    //         "title": "$job['title']",
+    //         "company": "$job['source_empname']",
+    //         "description": ["$job['html']", "$job['jobdesc']"],
+    //         "url": "$job['url']",
+    //         "location": "$job['source_city']",
+    //         "region": "$job['source_state']",
+    //         "Country": "$job['source_country']"
+    //     },
+    //     "UnassignedTags": {
+    //         "function": [null, null, null, null, null, null],
+    //         "parentLocationName": null,
+    //         "parentLocationId": null,
+    //         "GeoCoordinates": {
+    //             "latitude": null,
+    //             "longitude": null
+    //         },
+    //         "language": null
+    //     }
+    // }
 
-    // const jsonData = await getResultIndexValidator(props)
-    res.status(200).json(jsonData)
+    const jsonData = await getResultIndexValidator(props)
+    res.status(200).json(JSON.parse(jsonData))
 })
 
 export default indexRouter

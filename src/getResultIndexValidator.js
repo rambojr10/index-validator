@@ -8,7 +8,11 @@ async function getResultIndexValidator(props) {
     
     console.log('Generating...')
 
-    const { code, tags, message } = await getDataIndexValidator(props)
+    const { code, tags, message, type } = await getDataIndexValidator(props)
+
+    if (message) {
+        return { type, message }
+    }
 
     const response = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
@@ -27,9 +31,6 @@ async function getResultIndexValidator(props) {
     })
 
     console.log('Data generated.')
-    if (message) {
-        return message
-    }
     return response.data.choices[0]?.message?.content
 }
 

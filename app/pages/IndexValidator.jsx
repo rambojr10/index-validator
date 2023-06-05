@@ -5,6 +5,7 @@ import Button from "@mui/material/Button"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
+import Alert from "@mui/material/Alert"
 import { Editor } from "../components/Editor"
 import { Loader } from "../components/Loader"
 
@@ -14,18 +15,24 @@ import '../styles/IndexValidator.css'
 
 export function IndexValidator() {
 
-    const ClearOption = ({ ivScanid, resetStatus }) => {
+    const [scanid, setScanid] = useState(null)
+    const [scanidWithData, setScanidWithData] = useState(null)
+    const [error, setError] = useState(false)
+    const [loader, setLoader] = useState(false)
+    const [jsonData, setJsonData] = useState(null)
+    const [showAlert, setShowAlert] = useState(false)
 
+    const ClearOption = ({ id }) => {
         const handleClick = (e) => {
             e.preventDefault
-            localStorage.removeItem('ivJsonData')
-            localStorage.removeItem('ivScanid')
-            resetStatus()
+            setScanid(0)
+            setScanidWithData(null)
+            setJsonData(null)
+            setShowAlert(false)
         }
-        
         return (
             <>
-                <Typography variant="span" color="white">{ivScanid}</Typography>
+                <Typography variant="span" color="white">{id}</Typography>
                 <Button variant="outlined" startIcon={<DeleteIcon />} size='small' onClick={handleClick}>
                     Clear
                 </Button>
@@ -33,41 +40,42 @@ export function IndexValidator() {
         )
     }
 
-    const [scanid, setScanid] = useState(null)
-    const [error, setError] = useState(false)
-    const [loader, setLoader] = useState(false)
-    const [jsonData, setJsonData] = useState(null)
-    const ivScanid = localStorage.getItem('ivScanid')
-    const ivJsonData = localStorage.getItem('ivJsonData')
-
-    const resetStatus = () => {
-        setScanid(0)
-        setJsonData(null)
-    }
-
     const handleInputChange = (e) => {
         const { value } = e.target
         const onlyNumbers = value.replace(/[^0-9]/g, '')
         e.target.value = onlyNumbers
-        setScanid(onlyNumbers)
+        setScanid(value)
+        setError(false)
     }
 
     const handleClick = async (e) => {
         e.preventDefault
-        setLoader(true)
-        if (scanid) {
+        if (scanid && !scanidWithData) {
+            setLoader(true)
             const request = await fetch(`http://localhost:5173/api/iv/${scanid}`)
             const data = await request.json()
-            console.log(data)
-            if (data) {
-                localStorage.setItem('ivScanid', scanid)
-                localStorage.setItem('ivJsonData', jsonData)
+            if (data.type === 'error') {
+                setError(true)
                 setLoader(false)
+                setShowAlert(data)
+                setTimeout(() => {
+                    setShowAlert(false)
+                }, 5000)
+                return
+            } 
+
+            if (data.AssignedTags && data.UnassignedTags) {
+                console.log(data)
+                setLoader(false)
+                setScanidWithData(scanid)
                 setJsonData(data)
+                return
             }
+
+            setError(true)
+
         } else {
             setError(true)
-            setLoader(false)
         }
     }
 
@@ -116,16 +124,17 @@ export function IndexValidator() {
 
                 <Stack
                     direction='row'
-                    spacing={2}
+                    spacing={1}
                     alignItems='center'
                 >
-                    {ivScanid && <ClearOption ivScanid={ivScanid} resetStatus={resetStatus} />}
+                    {scanidWithData && <ClearOption id={scanidWithData} />}
                 </Stack>
             </Box>
 
             {loader && <Loader />}
+            {showAlert && !loader && <Alert severity={showAlert.type}>{showAlert.message}</Alert>}
             {
-                ivJsonData && ivScanid &&
+                jsonData && scanidWithData &&
                 <Stack
                     gap={2}
                     direction='column'

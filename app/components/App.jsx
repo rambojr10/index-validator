@@ -5,6 +5,7 @@ import { Login } from '../pages/Login'
 import { Dashboard } from '../pages/Dashboard'
 import { Loader } from './Loader'
 import { IndexValidator } from '../pages/IndexValidator'
+import { Logbook } from '../pages/Logbook'
 
 function App() {
 
@@ -63,6 +64,8 @@ function App() {
                     <Route path="refactor-code" element={<div>Refactor code</div>} />
                     <Route path="find-errors" element={<div>Find errors</div>} />
                     <Route path="verify-woi" element={<div>Verify WOI</div>} />
+                    <Route path="manteinance" element={<div>Manteinance</div>} />
+                    <Route path="logbook" element={<Logbook isActive={true} />} />
                     <Route path="wiki-ppc" element={<div>Wiki PPC</div>} />
                 </Route>
             </Routes>

@@ -12,7 +12,6 @@ import { Loader } from "../components/Loader"
 import { Delete as DeleteIcon } from "@mui/icons-material"
 import '../styles/IndexValidator.css'
 
-
 export function IndexValidator() {
 
     const [scanid, setScanid] = useState(null)
@@ -121,7 +120,8 @@ export function IndexValidator() {
                     </Button>
 
                 </Stack>
-
+                
+                {/* Agrega un button cancelar para cancelar la petición */}
                 <Stack
                     direction='row'
                     spacing={1}

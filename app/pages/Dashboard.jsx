@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Divider from '@mui/material/Divider'
-import { FactCheck, CodeOff, ErrorOutline, Key, LibraryBooks } from '@mui/icons-material'
+import { FactCheck, CodeOff, ErrorOutline, Key, LibraryBooks, Book, Brightness7 } from '@mui/icons-material'
 import { Menu } from '../components/Menu'
 import { Item } from '../components/Item'
 import { useState } from 'react'
@@ -52,6 +52,18 @@ export function Dashboard() {
                     icon={<Key />}
                     onClick={handleItemClick}
                     isActive={activeItem === 'Verify WOI'}
+                />
+                <Item
+                    service='Manteinance'
+                    icon={<Brightness7 />}
+                    onClick={handleItemClick}
+                    isActive={activeItem === 'Manteinance'}
+                />
+                <Item
+                    service='Logbook'
+                    icon={<Book />}
+                    onClick={handleItemClick}
+                    isActive={activeItem === 'Logbook'}
                 />
                 <Item
                     service='Wiki PPC'

@@ -12,7 +12,7 @@ import { useState } from "react"
 export function Manteinance() {
 
     const [activateLimitByColor, setActivateLimitByColor] = useState(false)
-    const [limitValue, setLimitValue] = useState('')
+    const [limitValue, setLimitValue] = useState('None')
     const [formData, setFormData] = useState({
         "whatExtract": {
             "errors": false,

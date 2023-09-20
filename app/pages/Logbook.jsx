@@ -5,8 +5,6 @@ registerAllModules()
 import { HotTable } from '@handsontable/react'
 import { useState } from 'react'
 
-
-
 export function Logbook () {
     
     const [indexers, setIndexers] = useState([])

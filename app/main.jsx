@@ -11,6 +11,9 @@ import '@fontsource/roboto/700.css'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 const theme = createTheme({
+    typography: {
+        fontSize: 13, // Redefine el tamaño de fuente base
+    },
     palette: {
         mode: 'dark',
         primary: {

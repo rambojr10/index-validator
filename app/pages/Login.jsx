@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -64,4 +65,8 @@ export function Login({ onLoginSuccess }) {
             </Stack>
         </Box>
     )
+}
+
+Login.propTypes = {
+    onLoginSuccess: PropTypes.func.isRequired
 }

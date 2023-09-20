@@ -7,6 +7,7 @@ import { Loader } from './Loader'
 import { IndexValidator } from '../pages/IndexValidator'
 import { Logbook } from '../pages/Logbook'
 import { Manteinance } from '../pages/Manteinance'
+import { MakeReport } from '../pages/MakeReport'
 
 function App() {
 
@@ -62,9 +63,12 @@ function App() {
                     }
                 >
                     <Route path="index-validator" element={<IndexValidator />} />
-                    <Route path="refactor-code" element={<div>Refactor code</div>} />
-                    <Route path="find-errors" element={<div>Find errors</div>} />
-                    <Route path="verify-woi" element={<div>Verify WOI</div>} />
+                    {/* <Route path="refactor-code" element={<div>Refactor code</div>} /> */}
+                    {/* <Route path="find-errors" element={<div>Find errors</div>} /> */}
+                    {/* <Route path="verify-woi" element={<div>Verify WOI</div>} /> */}
+                    <Route path="run-spiders" element={<div>Run spiders</div>} />
+                    <Route path="linkedin-logo" element={<div>Linkedin logo</div>} />
+                    <Route path="make-report" element={<MakeReport />} />
                     <Route path="manteinance" element={<Manteinance />} />
                     <Route path="logbook" element={<Logbook />} />
                     <Route path="wiki-ppc" element={<div>Wiki PPC</div>} />

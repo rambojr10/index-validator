@@ -18,7 +18,7 @@ export function Menu() {
             <AppBar position="static" sx={{ backgroundColor: 'primary.main' }}>
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        PPC Tools
+                        PPC General Tools
                     </Typography>
                     <Button color="inherit" onClick={logOut}>
                         Log out

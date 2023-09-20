@@ -1,13 +1,15 @@
+import dotenv from "dotenv"
+dotenv.config()
+
 import express from "express"
 import morgan from "morgan"
-import defaultConfigs from "./src/configs.js"
 import { fileURLToPath } from "url"
 import { dirname, resolve } from "path"
 
 import loginRouter from "./src/routes/login.js"
 import indexRouter from "./src/routes/indexValidator.js"
 
-const { PORT } = defaultConfigs
+const { PORT } = process.env
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
 

@@ -1,5 +1,7 @@
+import dotenv from "dotenv"
+dotenv.config()
+
 import { Router, json } from 'express'
-import configs from '../configs.js'
 import getResultIndexValidator from '../getResultIndexValidator.js'
 import cors from 'cors'
 
@@ -7,7 +9,7 @@ const validateScanid = (scanid) => {
     return scanid.match(/^[0-9]+$/)
 }
 
-const { email, password } = configs
+const { email, password } = process.env
 
 const indexRouter = Router()
 

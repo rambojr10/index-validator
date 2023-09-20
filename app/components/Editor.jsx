@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types'
 import AceEditor from "react-ace"
 import "ace-builds/src-noconflict/mode-json"
 import "ace-builds/src-noconflict/ext-language_tools"
@@ -28,4 +29,10 @@ export function Editor({ mode, name, value }) {
             }}
         />
     )
+}
+
+Editor.propTypes = {
+    mode: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
 }

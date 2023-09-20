@@ -81,7 +81,7 @@ export function MakeReport() {
     const handleInputRows = async (e) => {
         const { value } = e.target
         if (value < 1) {
-            e.target.value = 0
+            e.target.value = null
             setRows(null)
             return
         }
@@ -89,20 +89,21 @@ export function MakeReport() {
         const newRows = value
         setRows(newRows)
 
-        await new Promise(resolve => setTimeout(resolve, 10))
+        await new Promise(resolve => setTimeout(resolve, 20))
         
-        const hot = hotRef.current.hotInstance
+        const hot = hotRef.current?.hotInstance
         hot?.updateSettings({
             minRows: newRows,
-            maxRows: newRows
+            maxRows: 100
         })
     }
 
     const handleButtonGenerate = () => {
-        const hot = hotRef.current.hotInstance
+        const hot = hotRef.current?.hotInstance
+        if (!hot) return
 
         const data = hot.getSourceData()
-        const toReport = data.filter(e => e.toReport?.match(/si/i))
+        const toReport = data.filter(e => e.toReport?.match(/si|yes/i))
         const string = makeTemplate(toReport)
         const report = withoutSpace(string)
 

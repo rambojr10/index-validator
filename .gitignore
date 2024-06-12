@@ -1,3 +1,9 @@
+#other files
+StepsToComplete.txt
+Prompts.txt
+src/Examples.js
+src/configs.js
+
 # dotenv
 .env
 
@@ -14,9 +20,6 @@ node_modules
 dist
 dist-ssr
 *.local
-StepsToComplete.txt
-Prompts.txt
-src/Examples.js
 
 # Editor directories and files
 .vscode/*
